@@ -16,6 +16,8 @@ spec:
       value: dev-gcp
     - name: OPPGAVE_URL
       value: https://oppgave.dev.intern.nav.no/api/v1/oppgaver
+    - name: OPPGAVE_API_ID
+      value: dev-fss.oppgavehandtering.oppgave
     - name: OPPGAVE_TOPIC
       value: pensjonopptjening.pensjon-opptjening-oppgave-topic-q2
   image: {{ image }}

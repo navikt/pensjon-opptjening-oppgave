@@ -21,7 +21,7 @@ class OppgaveClientConfig {
     fun azureAdConfigOppgave(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${BREVBAKER_API_ID}") pgiEndringApiId: String,
+        @Value("\${OPPGAVE_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
     ) = AzureAdVariableConfig(
         azureAppClientId = azureAppClientId,
