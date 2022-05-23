@@ -2,10 +2,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val springVersion = "2.7.0"
 val springKafkaVersion = "2.8.5"
-val azureAdClientVersion = "0.0.7"
-
 val prometheusVersion = "1.9.0"
 val logbackEncoderVersion = "7.1.1"
+val azureAdClientVersion = "0.0.7"
 
 val wiremockVersion = "2.33.2"
 
@@ -22,6 +21,12 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.github.com/navikt/pensjon-opptjening-azure-ad-client") {
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
@@ -38,6 +43,9 @@ dependencies {
     // Log and metric
     implementation("io.micrometer:micrometer-registry-prometheus:$prometheusVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
+
+    // OIDC
+    implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
 
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")

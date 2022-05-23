@@ -14,6 +14,10 @@ spec:
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev-gcp
+    - name: OPPGAVE_URL
+      value: https://oppgave.dev.intern.nav.no/api/v1/oppgaver
+    - name: OPPGAVE_TOPIC
+      value: pensjonopptjening.pensjon-opptjening-oppgave-topic-q2
   image: {{ image }}
   ingresses:
     - https://pensjon-opptjening-oppgave-q2.dev.intern.nav.no
