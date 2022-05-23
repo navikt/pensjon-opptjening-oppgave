@@ -1,5 +1,5 @@
 OPPGAVE_URL: http://localhost:4567
 PDL_URL: http://localhost:4567
 kafka.brokers: ${spring.embedded.kafka.brokers}
-OPPGAVE_TOPIC: pensjonopptjening.pensjon-opptjening-oppgave-topic-q2
+OPPGAVE_TOPIC: pensjonopptjening.pensjon-opptjening-oppgave-topic
 OPPGAVE_GROUP_ID: oppgave-group-v1
