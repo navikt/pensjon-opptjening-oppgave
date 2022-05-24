@@ -13,6 +13,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
+    id("com.vanniktech.dependency.graph.generator") version "0.6.0"
 }
 
 group = "no.nav.pensjon.opptjening"

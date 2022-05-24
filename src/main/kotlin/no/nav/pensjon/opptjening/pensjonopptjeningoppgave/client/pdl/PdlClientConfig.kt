@@ -1,6 +1,5 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -35,14 +34,14 @@ class PdlClientConfig {
     @Profile("dev-gcp", "prod-gcp")
     fun tokenProviderPdl(@Qualifier("azureAdConfigPdl") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
-    @Bean("pdlTokenInterceptor")
-    fun pdlTokenInterceptor(@Qualifier("tokenProviderPdl") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    @Bean
+    fun pdlInterceptor(@Qualifier("tokenProviderPdl") tokenProvider: TokenProvider) = PdlInterceptor(tokenProvider)
 
     @Bean("pdlRestTemplate")
-    fun pdlRestTemplate(@Value("\${PDL_URL}") url: String, @Qualifier("pdlTokenInterceptor") tokenInterceptor: TokenInterceptor) = RestTemplateBuilder()
+    fun pdlRestTemplate(@Value("\${PDL_URL}") url: String, pdlInterceptor: PdlInterceptor): RestTemplate = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
-        .additionalInterceptors(tokenInterceptor)
+        .additionalInterceptors(pdlInterceptor)
         .build()
 
     @Bean
