@@ -30,7 +30,9 @@ class PdlClient(
         return pdlRestTemplate.postForObject(url, HttpEntity(request), GeografiskTilknytningResponse::class.java)
     }
 
-    private fun getGraphqlResource(file: String): String = javaClass.getResource(file).readText().replace(Regex("[\n\t]"), "")
+    private fun getGraphqlResource(file: String): String {
+        return javaClass.getResource(file).readText().replace(Regex("[\n\t]"), "")
+    }
 
     private fun handleErrors(message: String): String {
         logger.error(message)

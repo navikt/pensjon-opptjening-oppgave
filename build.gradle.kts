@@ -5,7 +5,6 @@ val springKafkaVersion = "2.8.5"
 val prometheusVersion = "1.9.0"
 val logbackEncoderVersion = "7.1.1"
 val azureAdClientVersion = "0.0.7"
-
 val wiremockVersion = "2.33.2"
 
 plugins {
@@ -48,7 +47,7 @@ dependencies {
     // OIDC
     implementation("no.nav.pensjonopptjening:pensjon-opptjening-azure-ad-client:$azureAdClientVersion")
 
-
+    testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springKafkaVersion")
 }
