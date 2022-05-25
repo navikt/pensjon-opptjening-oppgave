@@ -26,45 +26,40 @@
     </springProfile>
 
     <springProfile name="dev-gcp">
-        <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%level %logger %msg %n</pattern>
-            </encoder>
-            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-                <includeCallerData>true</includeCallerData>
-            </encoder>
-        </appender>
-
-        <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/secure-logs/secure.log</file>
-            <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-                <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
-                <minIndex>1</minIndex>
-                <maxIndex>1</maxIndex>
-            </rollingPolicy>
-            <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-                <maxFileSize>50MB</maxFileSize>
-            </triggeringPolicy>
+        <appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
             <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
         </appender>
 
-        <logger name="tjenestekall" level="INFO" additivity="false">
-            <appender-ref ref="secureLog"/>
+        <logger name="io" level="ERROR">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="org" level="ERROR">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="com" level="ERROR">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="no.nav" level="DEBUG">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="no.nav.security" level="ERROR">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="DEBUG">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="no.nav.security.token.support.core.validation" level="DEBUG">
+            <appender-ref ref="STDOUT_JSON"/>
+        </logger>
+        <logger name="org.springframework.web.client.RestTemplate" level="DEBUG">
+            <appender-ref ref="STDOUT_JSON"/>
         </logger>
 
+        <include resource="secure-log.xml"/>
+
         <root level="info">
-            <appender-ref ref="stdout_json"/>
+            <appender-ref ref="STDOUT_JSON"/>
         </root>
-
-        <logger name="io" level="ERROR"/>
-        <logger name="org" level="ERROR"/>
-        <logger name="com" level="ERROR"/>
-        <logger name="no.nav" level="DEBUG"/>
-        <logger name="no.nav.security" level="ERROR"/>
-        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="DEBUG"/>
-        <logger name="no.nav.security.token.support.core.validation" level="DEBUG"/>
-        <logger name="org.springframework.web.client.RestTemplate" level="DEBUG"/>
-
     </springProfile>
 
     <springProfile name="local">
@@ -75,7 +70,7 @@
         </appender>
 
         <root level="info">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </root>
 
         <logger name="io" level="ERROR"/>
