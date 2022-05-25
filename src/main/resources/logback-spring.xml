@@ -15,7 +15,7 @@
         <logger name="com" level="ERROR"/>
         <logger name="no.nav" level="INFO"/>
         <logger name="no.nav.security" level="ERROR"/>
-        <logger name="no.nav.pgi-endring" level="INFO"/>
+        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="INFO"/>
         <logger name="no.nav.security.token.support.core.validation" level="ERROR"/>
 
         <root level="info">
@@ -42,7 +42,7 @@
         <logger name="com" level="ERROR"/>
         <logger name="no.nav" level="DEBUG"/>
         <logger name="no.nav.security" level="ERROR"/>
-        <logger name="no.nav.pgi-endring" level="DEBUG"/>
+        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="DEBUG"/>
         <logger name="no.nav.security.token.support.core.validation" level="DEBUG"/>
         <logger name="org.springframework.web.client.RestTemplate" level="DEBUG"/>
 
@@ -63,8 +63,24 @@
         <logger name="com" level="ERROR"/>
         <logger name="no.nav" level="DEBUG"/>
         <logger name="no.nav.security" level="DEBUG"/>
-        <logger name="no.nav.pgi-endring" level="DEBUG"/>
-
+        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="DEBUG"/>
     </springProfile>
+
+    <logger name="tjenestekall" level="INFO" additivity="false">
+        <appender-ref ref="secureLog"/>
+    </logger>
+
+    <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/secure-logs/secure.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>1</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>50MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
 
 </configuration>
