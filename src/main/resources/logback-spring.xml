@@ -10,6 +10,8 @@
             </encoder>
         </appender>
 
+        <include resource="secure-log.xml"/>
+
         <logger name="io" level="ERROR"/>
         <logger name="org" level="ERROR"/>
         <logger name="com" level="ERROR"/>
@@ -33,6 +35,8 @@
             </encoder>
         </appender>
 
+        <include resource="secure-log.xml"/>
+
         <root level="info">
             <appender-ref ref="stdout_json"/>
         </root>
@@ -54,6 +58,7 @@
                 <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
             </encoder>
         </appender>
+
         <root level="info">
             <appender-ref ref="STDOUT" />
         </root>
