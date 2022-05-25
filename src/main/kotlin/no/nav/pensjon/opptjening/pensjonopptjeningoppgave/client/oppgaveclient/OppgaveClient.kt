@@ -4,6 +4,11 @@ import org.springframework.web.client.RestTemplate
 
 open class OppgaveClient(restTemplate: RestTemplate, url: String) {
 
+
+    fun lagOppgave(lagOppgaveRequest: LagOppgaveRequest) {
+        TODO("Not yet implemented")
+    }
+
     /**
     @Retryable(
     include = [HttpStatusCodeException::class],

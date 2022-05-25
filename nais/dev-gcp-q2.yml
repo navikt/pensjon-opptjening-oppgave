@@ -24,6 +24,8 @@ spec:
       valu: dev-fss.pdl.pdl-api
     - name: OPPGAVE_TOPIC
       value: pensjonopptjening.pensjon-opptjening-oppgave-topic-q2
+    - name: OPPGAVE_GROUP_ID
+      value: oppgave-group-v1
   image: {{ image }}
   ingresses:
     - https://pensjon-opptjening-oppgave-q2.dev.intern.nav.no

@@ -7,7 +7,8 @@ import org.springframework.http.HttpEntity
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 
-private val secureLog = LoggerFactory.getLogger("tjenestekall")
+// TODO Secure logs
+private val logger = LoggerFactory.getLogger(PdlClient::class.java)
 
 class PdlClient(
     private val pdlRestTemplate: RestTemplate,
@@ -34,7 +35,7 @@ class PdlClient(
     }
 
     private fun handleErrors(message: String): String {
-        secureLog.error(message)
+        logger.error(message)
         throw PdlException(message)
     }
 
