@@ -14,4 +14,4 @@ fun main(args: Array<String>) {
     runApplication<PensjonOpptjeningOppgaveApplication>(*args)
 }
 
-private val logger = LoggerFactory.getLogger("tjenestekall")
+private val logger = LoggerFactory.getLogger("secureLogger")
