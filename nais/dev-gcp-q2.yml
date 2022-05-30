@@ -18,6 +18,10 @@ spec:
       value: https://oppgave.dev.intern.nav.no/api/v1/oppgaver
     - name: OPPGAVE_API_ID
       value: dev-fss.oppgavehandtering.oppgave
+    - name: PEN_ENHET_URL
+      value: https://pensjon-pen-q2.nais.preprod.local/pen/springapi/enhet/sak/
+    - name: PEN_API_ID
+      value: dev-fss.teampensjon.pensjon-pen-q2
     - name: PDL_URL
       value: https://pdl-api.dev-fss-pub.nais.io/graphql
     - name: PDL_API_ID

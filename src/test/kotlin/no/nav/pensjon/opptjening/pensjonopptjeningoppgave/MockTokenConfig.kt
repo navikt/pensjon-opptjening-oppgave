@@ -11,6 +11,7 @@ class MockTokenConfig {
     companion object {
         const val OPPGAVE_TOKEN = "oppgave.oppgave.oppgave"
         const val PDL_TOKEN = "pdl.pdl.pdl"
+        const val PEN_TOKEN = "pen.pen.pen"
     }
 
     @Bean("tokenProviderOppgave")
@@ -18,4 +19,7 @@ class MockTokenConfig {
 
     @Bean("tokenProviderPdl")
     fun tokenProviderPdl(): TokenProvider = MockTokenProvider(PDL_TOKEN)
+
+    @Bean("tokenProviderPen")
+    fun tokenProviderPen(): TokenProvider = MockTokenProvider(PEN_TOKEN)
 }

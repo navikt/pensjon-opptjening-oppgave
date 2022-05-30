@@ -21,9 +21,9 @@ class OppgaveService(
     private fun createLagOppgaveRequest(aktoerId: String, oppgaveHendelse: OppgaveHendelse): LagOppgaveRequest {
         return LagOppgaveRequest(
             aktoerId = aktoerId,
-            sakNr = oppgaveHendelse.sakNr,
+            sakNr = oppgaveHendelse.penSakId,
             journalpostId = oppgaveHendelse.journalpostId,
-            tildeltEnhetsnr = oppgaveHendelse.tildeltEnhetsnr,
+            tildeltEnhetsnr = oppgaveHendelse.tildeltEnhetsnr!!, //TODO kall pen
             oppgaveType = oppgaveHendelse.oppgaveType
         )
     }
