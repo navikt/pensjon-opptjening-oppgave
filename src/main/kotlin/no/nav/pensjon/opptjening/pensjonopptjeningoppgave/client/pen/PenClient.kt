@@ -1,9 +1,11 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pen
 
+import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pen.model.EnhetNotFoundException
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pen.model.PenEnhetResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
@@ -20,13 +22,20 @@ class PenClient(
 
     private val baseUrl = URL(url)
 
-    fun getPenEnhet(penSakId: Long): String? {
+    fun getPenEnhet(penSakId: Long): String {
         try {
             val responseEntity = restTemplate.getForEntity(URL(baseUrl, "$penSakId").toURI(), PenEnhetResponse::class.java)
-            return responseEntity.body?.enhetId
+            if (responseEntity.statusCode == HttpStatus.NO_CONTENT) handleEnhetNotFound(penSakId)
+            return responseEntity.body!!.enhetId
         } catch (e: HttpStatusCodeException) {
             logger.error("Failed with status ${e.statusCode} when retrieving enhet from Pen on sak: $penSakId", e)
             throw e
         }
+    }
+
+    private fun handleEnhetNotFound(penSakId: Long) {
+        val message = "Enhet not found when calling Pen with penSakId: $penSakId"
+        logger.error(message)
+        throw EnhetNotFoundException(message)
     }
 }

@@ -4,9 +4,9 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.MockTokenConfig
+import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pen.model.EnhetNotFoundException
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pen.model.PenEnhetResponse
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,10 +33,10 @@ internal class PenClientTest {
     }
 
     @Test
-    fun `PenClient should return null no data in response from pen`() {
+    fun `PenClient should throw EnhetNotFoundException when no data in response from pen`() {
         val response = PenEnhetResponse(PEN_ENHET)
         stubPenEnhetEndpoint(response.toJson(), OTHER_PEN_SAK_ID, status = HttpStatus.NO_CONTENT.value())
-        assertNull(penClient.getPenEnhet(PEN_SAK_ID))
+        assertThrows<EnhetNotFoundException> { penClient.getPenEnhet(PEN_SAK_ID) }
     }
 
     @Test

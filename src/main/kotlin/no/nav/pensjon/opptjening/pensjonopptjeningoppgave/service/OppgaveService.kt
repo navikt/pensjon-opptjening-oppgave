@@ -3,12 +3,14 @@ package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.service
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.oppgaveclient.LagOppgaveRequest
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.oppgaveclient.OppgaveClient
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl.PdlClient
+import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pen.PenClient
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.consumer.OppgaveHendelse
 import org.springframework.stereotype.Service
 
 @Service
 class OppgaveService(
     private val pdlClient: PdlClient,
+    private val penClient: PenClient,
     private val oppgaveClient: OppgaveClient,
 ) {
 
@@ -21,9 +23,9 @@ class OppgaveService(
     private fun createLagOppgaveRequest(aktoerId: String, oppgaveHendelse: OppgaveHendelse): LagOppgaveRequest {
         return LagOppgaveRequest(
             aktoerId = aktoerId,
-            sakNr = oppgaveHendelse.penSakId,
+            sakNr = "${oppgaveHendelse.penSakId}",
             journalpostId = oppgaveHendelse.journalpostId,
-            tildeltEnhetsnr = oppgaveHendelse.tildeltEnhetsnr!!, //TODO kall pen
+            tildeltEnhetsnr = oppgaveHendelse.tildeltEnhetsnr ?: penClient.getPenEnhet(oppgaveHendelse.penSakId),
             oppgaveType = oppgaveHendelse.oppgaveType
         )
     }
