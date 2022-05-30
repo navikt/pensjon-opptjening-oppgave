@@ -16,7 +16,7 @@ import java.time.Duration
 @Configuration
 class OppgaveClientConfig {
 
-    @Bean("azureAdConfigOppgave")
+    @Bean
     @Profile("dev-gcp", "prod-gcp")
     fun azureAdConfigOppgave(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
@@ -30,14 +30,14 @@ class OppgaveClientConfig {
         wellKnownUrl = wellKnownUrl,
     )
 
-    @Bean("tokenProviderOppgave")
+    @Bean
     @Profile("dev-gcp", "prod-gcp")
     fun tokenProviderOppgave(@Qualifier("azureAdConfigOppgave") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
-    @Bean("oppgaveTokenInterceptor")
+    @Bean
     fun oppgaveTokenInterceptor(@Qualifier("tokenProviderOppgave") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
 
-    @Bean("oppgaveRestTemplate")
+    @Bean
     fun oppgaveRestTemplate(@Value("\${OPPGAVE_URL}") url: String, @Qualifier("oppgaveTokenInterceptor") tokenInterceptor: TokenInterceptor) = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
