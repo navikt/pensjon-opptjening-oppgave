@@ -16,7 +16,7 @@ import java.time.Duration
 @Configuration
 class PdlClientConfig {
 
-    @Bean("azureAdConfigPdl")
+    @Bean
     @Profile("dev-gcp", "prod-gcp")
     fun azureAdConfigPdl(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
@@ -30,14 +30,14 @@ class PdlClientConfig {
         wellKnownUrl = wellKnownUrl,
     )
 
-    @Bean("tokenProviderPdl")
+    @Bean
     @Profile("dev-gcp", "prod-gcp")
     fun tokenProviderPdl(@Qualifier("azureAdConfigPdl") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean
     fun pdlInterceptor(@Qualifier("tokenProviderPdl") tokenProvider: TokenProvider) = PdlInterceptor(tokenProvider)
 
-    @Bean("pdlRestTemplate")
+    @Bean
     fun pdlRestTemplate(@Value("\${PDL_URL}") url: String, pdlInterceptor: PdlInterceptor): RestTemplate = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
