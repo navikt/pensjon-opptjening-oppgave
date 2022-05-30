@@ -68,10 +68,6 @@ internal class PdlClientTest {
                 )
         )
     }
-
-    companion object {
-
-    }
 }
 
 private const val FNR = "12345678901"
