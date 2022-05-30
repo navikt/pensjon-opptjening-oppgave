@@ -13,15 +13,15 @@ class KafkaStoppingErrorHandler : CommonContainerStoppingErrorHandler() {
 
     override fun handleRemaining(thrownException: Exception, records: MutableList<ConsumerRecord<*, *>>, consumer: Consumer<*, *>, container: MessageListenerContainer) {
         createAlert()
-        logError(thrownException,records)
+        logError(thrownException, records)
         super.handleRemaining(thrownException, records, consumer, container)
     }
 
-    private fun createAlert(){
+    private fun createAlert() {
         //TODO
     }
 
-    private fun logError(thrownException: Exception, records: MutableList<ConsumerRecord<*, *>>){
+    private fun logError(thrownException: Exception, records: MutableList<ConsumerRecord<*, *>>) {
         logger.error(
             "En feil oppstod under kafka konsumering av meldinger: \n${textList(records)} \nStopper containeren ! Restart er nødvendig for å fortsette konsumering",
             thrownException

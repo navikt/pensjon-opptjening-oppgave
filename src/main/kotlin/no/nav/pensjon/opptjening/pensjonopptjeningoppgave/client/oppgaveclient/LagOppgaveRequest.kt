@@ -5,5 +5,5 @@ data class LagOppgaveRequest(
     val sakNr: String,
     val journalpostId: String?,
     val tildeltEnhetsnr: String,
-    val oppgaveType: String
+    val oppgaveType: String,
 )

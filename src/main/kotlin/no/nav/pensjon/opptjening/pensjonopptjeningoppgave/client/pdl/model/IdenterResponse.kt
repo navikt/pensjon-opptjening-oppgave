@@ -6,20 +6,20 @@ import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl.ResponseErr
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal data class IdenterResponse(
     val data: IdenterDataResponse? = null,
-    val errors: List<ResponseError>? = null
+    val errors: List<ResponseError>? = null,
 )
 
 internal data class IdenterDataResponse(
-    val hentIdenter: HentIdenter?
+    val hentIdenter: HentIdenter?,
 )
 
 internal data class HentIdenter(
-    val identer: List<IdentInformasjon>
+    val identer: List<IdentInformasjon>,
 )
 
 data class IdentInformasjon(
     val ident: String,
-    val gruppe: IdentGruppe
+    val gruppe: IdentGruppe,
 )
 
 enum class IdentGruppe {

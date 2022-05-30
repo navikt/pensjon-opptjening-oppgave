@@ -1,4 +1,4 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor
+package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.interceptor
 
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution

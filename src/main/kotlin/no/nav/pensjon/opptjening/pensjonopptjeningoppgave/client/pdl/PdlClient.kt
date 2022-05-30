@@ -1,7 +1,7 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl.model.*
+import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.util.toJson
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -21,22 +21,15 @@ class PdlClient(
     private val baseUrl = URI(url)
 
     internal fun hentAktorId(fnr: String): String {
-        val request = GraphqlRequest(getGraphqlResource("/graphql/hentAktorId.graphql"), Variables(fnr))
+        val request = GraphqlRequest(getGraphqlAktorIdQuery(), Variables(fnr))
         val response = pdlRestTemplate.postForObject(baseUrl, HttpEntity(request), IdenterResponse::class.java)
 
         response?.errors?.let { handleErrors(pdlErrorMessage(fnr, it)) }
         return response?.data?.hentIdenter?.identer?.firstNotNullOfOrNull { it.ident } ?: handleErrors(identNullErrorMessage(fnr))
     }
 
-    internal fun hentGeografiskTilknytning(ident: String): GeografiskTilknytningResponse? {
-        val query = getGraphqlResource("/graphql/hentGeografiskTilknytning.graphql")
-        val request = GraphqlRequest(query, Variables(ident))
-
-        return pdlRestTemplate.postForObject(baseUrl, HttpEntity(request), GeografiskTilknytningResponse::class.java)
-    }
-
-    private fun getGraphqlResource(file: String): String {
-        return javaClass.getResource(file).readText().replace(Regex("[\n\t]"), "")
+    private fun getGraphqlAktorIdQuery(): String {
+        return javaClass.getResource(HENT_AKTOER_ID_FILE)!!.readText().replace(Regex("[\n\t]"), "")
     }
 
     private fun handleErrors(message: String): String {
@@ -44,6 +37,14 @@ class PdlClient(
         throw PdlException(message)
     }
 
-    private fun pdlErrorMessage(fnr: String, errors: List<ResponseError>) = "Oppslag mot PDL feilet for fnr $fnr med error:  \n ${errors.toJson()}"
-    private fun identNullErrorMessage(fnr: String): String = "Oppslag mot PDL feilet for fnr $fnr. ident var null"
+    private fun pdlErrorMessage(fnr: String, errors: List<ResponseError>): String {
+        return "Oppslag mot PDL feilet for fnr $fnr med error:  \n ${errors.toJson()}"
+    }
+    private fun identNullErrorMessage(fnr: String): String {
+        return "Oppslag mot PDL feilet for fnr $fnr. ident var null"
+    }
+
+    companion object{
+        private const val HENT_AKTOER_ID_FILE = "/graphql/hentAktorId.graphql"
+    }
 }
