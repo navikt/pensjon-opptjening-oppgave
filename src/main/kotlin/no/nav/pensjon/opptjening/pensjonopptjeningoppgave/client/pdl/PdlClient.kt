@@ -3,6 +3,9 @@ package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl
 import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.util.toJson
 import no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl.model.*
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
 import org.springframework.web.client.RestTemplate
 import java.net.URI
@@ -10,14 +13,16 @@ import java.net.URI
 // TODO Secure logs
 private val logger = LoggerFactory.getLogger(PdlClient::class.java)
 
+@Configuration
 class PdlClient(
-    private val pdlRestTemplate: RestTemplate,
-    private val url: URI,
+    @Qualifier("pdlRestTemplate") private val pdlRestTemplate: RestTemplate,
+    @Value("\${PDL_URL}") url: String,
 ) {
+    private val baseUrl = URI(url)
 
     internal fun hentAktorId(fnr: String): String {
         val request = GraphqlRequest(getGraphqlResource("/graphql/hentAktorId.graphql"), Variables(fnr))
-        val response = pdlRestTemplate.postForObject(url, HttpEntity(request), IdenterResponse::class.java)
+        val response = pdlRestTemplate.postForObject(baseUrl, HttpEntity(request), IdenterResponse::class.java)
 
         response?.errors?.let { handleErrors(pdlErrorMessage(fnr, it)) }
         return response?.data?.hentIdenter?.identer?.firstNotNullOfOrNull { it.ident } ?: handleErrors(identNullErrorMessage(fnr))
@@ -27,7 +32,7 @@ class PdlClient(
         val query = getGraphqlResource("/graphql/hentGeografiskTilknytning.graphql")
         val request = GraphqlRequest(query, Variables(ident))
 
-        return pdlRestTemplate.postForObject(url, HttpEntity(request), GeografiskTilknytningResponse::class.java)
+        return pdlRestTemplate.postForObject(baseUrl, HttpEntity(request), GeografiskTilknytningResponse::class.java)
     }
 
     private fun getGraphqlResource(file: String): String {

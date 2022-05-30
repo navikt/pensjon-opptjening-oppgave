@@ -1,6 +1,5 @@
-package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.oppgaveclient
+package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.pdl
 
-import no.nav.pensjon.opptjening.pensjonopptjeningjournalforing.client.interceptor.TokenInterceptor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -14,14 +13,14 @@ import pensjon.opptjening.azure.ad.client.TokenProvider
 import java.time.Duration
 
 @Configuration
-class OppgaveClientConfig {
+class PdlRestTemplateConfig {
 
     @Bean
     @Profile("dev-gcp", "prod-gcp")
-    fun azureAdConfigOppgave(
+    fun azureAdConfigPdl(
         @Value("\${AZURE_APP_CLIENT_ID}") azureAppClientId: String,
         @Value("\${AZURE_APP_CLIENT_SECRET}") azureAppClientSecret: String,
-        @Value("\${OPPGAVE_API_ID}") pgiEndringApiId: String,
+        @Value("\${PDL_API_ID}") pgiEndringApiId: String,
         @Value("\${AZURE_APP_WELL_KNOWN_URL}") wellKnownUrl: String,
     ) = AzureAdVariableConfig(
         azureAppClientId = azureAppClientId,
@@ -32,20 +31,15 @@ class OppgaveClientConfig {
 
     @Bean
     @Profile("dev-gcp", "prod-gcp")
-    fun tokenProviderOppgave(@Qualifier("azureAdConfigOppgave") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
+    fun tokenProviderPdl(@Qualifier("azureAdConfigPdl") azureAdVariableConfig: AzureAdVariableConfig): TokenProvider = AzureAdTokenProvider(azureAdVariableConfig)
 
     @Bean
-    fun oppgaveTokenInterceptor(@Qualifier("tokenProviderOppgave") tokenProvider: TokenProvider): TokenInterceptor = TokenInterceptor(tokenProvider)
+    fun pdlInterceptor(@Qualifier("tokenProviderPdl") tokenProvider: TokenProvider) = PdlInterceptor(tokenProvider)
 
     @Bean
-    fun oppgaveRestTemplate(@Value("\${OPPGAVE_URL}") url: String, @Qualifier("oppgaveTokenInterceptor") tokenInterceptor: TokenInterceptor) = RestTemplateBuilder()
+    fun pdlRestTemplate(@Value("\${PDL_URL}") url: String, pdlInterceptor: PdlInterceptor): RestTemplate = RestTemplateBuilder()
         .setConnectTimeout(Duration.ofMillis(1000))
         .rootUri(url)
-        .additionalInterceptors(tokenInterceptor)
+        .additionalInterceptors(pdlInterceptor)
         .build()
-
-    @Bean
-    fun oppgaveClient(@Qualifier("oppgaveRestTemplate") restTemplate: RestTemplate,@Value("\${OPPGAVE_URL}") url: String): OppgaveClient {
-        return OppgaveClient(restTemplate,url)
-    }
 }

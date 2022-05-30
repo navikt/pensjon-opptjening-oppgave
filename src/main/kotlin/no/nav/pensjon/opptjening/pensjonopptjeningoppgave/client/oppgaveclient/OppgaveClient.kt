@@ -1,8 +1,12 @@
 package no.nav.pensjon.opptjening.pensjonopptjeningoppgave.client.oppgaveclient
 
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
-open class OppgaveClient(restTemplate: RestTemplate, url: String) {
+@Component
+class OppgaveClient(@Qualifier("oppgaveRestTemplate") restTemplate: RestTemplate, @Value("\${OPPGAVE_URL}") url: String) {
 
 
     fun lagOppgave(lagOppgaveRequest: LagOppgaveRequest) {
