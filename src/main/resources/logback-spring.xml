@@ -1,33 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <springProfile name="prod-gcp">
-        <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%level %logger %msg %n</pattern>
-            </encoder>
-            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-                <includeCallerData>true</includeCallerData>
-            </encoder>
-        </appender>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
 
-        <include resource="secure-log.xml"/>
-
-        <logger name="io" level="ERROR"/>
-        <logger name="org" level="ERROR"/>
-        <logger name="com" level="ERROR"/>
-        <logger name="no.nav" level="INFO"/>
-        <logger name="no.nav.security" level="ERROR"/>
-        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="INFO"/>
-        <logger name="no.nav.security.token.support.core.validation" level="ERROR"/>
-
-        <root level="info">
-            <appender-ref ref="stdout_json"/>
-        </root>
-    </springProfile>
-
-    <springProfile name="dev-gcp">
-        <!-- Secure log config -->
-        <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <springProfile name="prod-gcp | dev-gcp">
+        <appender name="secureLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>/secure-logs/secure.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
                 <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
@@ -39,47 +17,22 @@
             </triggeringPolicy>
             <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
         </appender>
-        <logger name="secureLogger" level="INFO" additivity="false">
-            <appender-ref ref="secureLog"/>
-        </logger>
-
-        <appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-        </appender>
-
-        <logger name="org.apache" level="${log.level.org.apache:-INFO}"/>
-        <logger name="org.apache.kafka" level="${log.level.org.apache.kafka:-INFO}"/>
-        <logger name="org.springframework" level="${log.level.org.springframework:-INFO}"/>
-        <logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-INFO}"/>
-
-        <logger name="io" level="INFO"/>
-        <logger name="org" level="INFO"/>
-        <logger name="com" level="INFO"/>
-        <logger name="no.nav" level="INFO"/>
-        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="DEBUG"/>
-
-        <root level="INFO">
-            <appender-ref ref="STDOUT_JSON"/>
-        </root>
     </springProfile>
 
     <springProfile name="local">
-        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
-            </encoder>
+        <appender name="secureLogger" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %X{X-Nav-CallId} [%thread] %-5level %logger{70} - %msg%n</Pattern>
+            </layout>
         </appender>
-
-        <root level="info">
-            <appender-ref ref="STDOUT"/>
-        </root>
-
-        <logger name="io" level="ERROR"/>
-        <logger name="org" level="ERROR"/>
-        <logger name="com" level="ERROR"/>
-        <logger name="no.nav" level="DEBUG"/>
-        <logger name="no.nav.security" level="DEBUG"/>
-        <logger name="no.nav.pensjon.opptjening.pensjonopptjeningoppgave" level="DEBUG"/>
     </springProfile>
+
+    <logger name="secureLogger" level="INFO" additivity="false">
+        <appender-ref ref="secureLogger" />
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="stdout"/>
+    </root>
 
 </configuration>

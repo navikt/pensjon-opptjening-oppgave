@@ -14,12 +14,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 
 
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = ["pensjonopptjening.pensjon-opptjening-oppgave-topic"])
 @WireMockTest(httpPort = 4567)
+@ActiveProfiles("local")
 internal class PdlClientTest {
 
     @Autowired

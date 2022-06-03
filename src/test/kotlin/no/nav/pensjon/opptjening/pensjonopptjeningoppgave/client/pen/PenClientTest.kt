@@ -15,12 +15,14 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.client.HttpStatusCodeException
 
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = ["pensjonopptjening.pensjon-opptjening-oppgave-topic"])
 @WireMockTest(httpPort = 4567)
+@ActiveProfiles("local")
 internal class PenClientTest {
     @Autowired
     private lateinit var penClient: PenClient
